@@ -29,7 +29,7 @@ services:
         env_file: ./build/nsearch-py/nspy.env
         command: flask run --host=0.0.0.0
         volumes:
-            - ./data/nsearch-back:/var/www/nsearch-back
+            - ./data/nsearch-back:/var/www/nsearch
         networks:
             nsearch-network:
                 aliases:

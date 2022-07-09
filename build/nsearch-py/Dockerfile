@@ -30,7 +30,6 @@ RUN pip install --upgrade pip
 
 RUN pip install -r requirements.txt
 
-WORKDIR /var/www/nsearch
 
 # RUN sh install.sh
 
@@ -40,6 +39,6 @@ WORKDIR /var/www/
 
 RUN rm -rf pre
 
-WORKDIR /var/www/brief-back
+WORKDIR /var/www/nsearch
 
 #CMD ["tail","-f","/dev/null"]
