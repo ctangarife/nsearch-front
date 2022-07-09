@@ -1,0 +1,46 @@
+version: "3.4"
+# https://docs.docker.com/compose/compose-file/
+services:
+  nsearch-nginx:
+    image: nginx:latest
+    container_name: nsearch-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/security-headers.conf:/etc/nginx/security-headers.conf
+      - ./nginx/sites/nsearch.conf:/etc/nginx/conf.d/default.conf
+      - ./data/nsearch-cms-ssr/:/var/www/html/ssr_front
+    ports:
+      - 8080:80
+    restart: always
+    networks:
+      - nsearch-network
+
+  nsearch_rabbitmq:
+    image: "rabbitmq:3.6-management-alpine"
+    ports:
+      - "5672:5672"
+      - "15676:15672"
+    env_file: ./build/nsearch-rabbitmq/rabbit.env
+    networks:
+      nsearch-network:
+        aliases:
+          - rabbitmq_nsearch
+          
+  ## PGL
+  nsearch-pgl:
+    build:
+      context: ./
+      dockerfile: build/nsearch-pgl/Dockerfile
+    container_name: nsearch-pgl
+    env_file: ./build/nsearch-pgl/pgl.env
+    ports:
+      - "5436:5432"
+    volumes:
+      - ./db/pgl/data:/var/lib/postgresql/data
+    restart: "unless-stopped"
+    networks:
+      nsearch-network:
+        aliases:
+          - nsearch-pgl-db
+networks:
+  nsearch-network:
