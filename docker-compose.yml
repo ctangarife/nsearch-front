@@ -8,23 +8,33 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/security-headers.conf:/etc/nginx/security-headers.conf
       - ./nginx/sites/nsearch.conf:/etc/nginx/conf.d/default.conf
-      - ./data/nsearch-cms-ssr/:/var/www/html/ssr_front
+      # - ./data/nsearch-cms-ssr/:/var/www/html/ssr_front
     ports:
       - 8080:80
     restart: always
     networks:
       - nsearch-network
+  
+  #Flask
+  nsearch-back:
+        container_name: nsearch-back
+        build: 
+            context: ./
+            dockerfile: build/nsearch-py/Dockerfile
+        restart: always
+        # expose:
+        #     - "5000"
+        ports:
+            - "5005:5000"
+        env_file: ./build/nsearch-py/nspy.env
+        command: flask run --host=0.0.0.0
+        volumes:
+            - ./data/nsearch-back:/var/www/nsearch-back
+        networks:
+            nsearch-network:
+                aliases:
+                    - nsearch-back
 
-  nsearch_rabbitmq:
-    image: "rabbitmq:3.6-management-alpine"
-    ports:
-      - "5672:5672"
-      - "15676:15672"
-    env_file: ./build/nsearch-rabbitmq/rabbit.env
-    networks:
-      nsearch-network:
-        aliases:
-          - rabbitmq_nsearch
           
   ## PGL
   nsearch-pgl:
