@@ -44,7 +44,7 @@ services:
     container_name: nsearch-pgl
     env_file: ./build/nsearch-pgl/pgl.env
     ports:
-      - "5436:5432"
+      - "5437:5432"
     volumes:
       - ./db/pgl/data:/var/lib/postgresql/data
     restart: "unless-stopped"
