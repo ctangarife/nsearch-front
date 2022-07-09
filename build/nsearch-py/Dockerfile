@@ -25,14 +25,14 @@ RUN rm -rf /var/cache/apk/*
 WORKDIR /var/www/pre
 
 # ADD ./build/nsearch/config.yaml /var/www/pre/scripts/config.yaml
-ADD ./build/flask/requirements.txt /var/www/pre/requirements.txt
+ADD ./build/nsearch-py/requirements.txt /var/www/pre/requirements.txt
 RUN pip install --upgrade pip
 
 RUN pip install -r requirements.txt
 
 WORKDIR /var/www/nsearch
 
-RUN sh install.sh
+# RUN sh install.sh
 
 #RUN echo 'alias nsearch="python /var/www/nsearch/nsearch.py"' >> ~/.bashrc
 
