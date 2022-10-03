@@ -14,28 +14,27 @@ services:
     restart: always
     networks:
       - nsearch-network
-  
+
   #Flask
   nsearch-back:
-        container_name: nsearch-back
-        build: 
-            context: ./
-            dockerfile: build/nsearch-py/Dockerfile
-        restart: always
-        # expose:
-        #     - "5000"
-        ports:
-            - "5005:5000"
-        env_file: ./build/nsearch-py/nspy.env
-        command: flask run --host=0.0.0.0
-        volumes:
-            - ./data/nsearch-back:/var/www/nsearch
-        networks:
-            nsearch-network:
-                aliases:
-                    - nsearch-back
+    container_name: nsearch-back
+    build:
+      context: ./
+      dockerfile: build/nsearch-py/Dockerfile
+    restart: always
+    # expose:
+    #     - "5000"
+    ports:
+      - "5005:5000"
+    env_file: ./build/nsearch-py/nspy.env
+    command: flask run --host=0.0.0.0
+    volumes:
+      - ./data/nsearch-back:/var/www/nsearch
+    networks:
+      nsearch-network:
+        aliases:
+          - nsearch-back
 
-          
   ## PGL
   nsearch-pgl:
     build:
